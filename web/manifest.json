@@ -1,6 +1,6 @@
 {
-    "name": "grocery_app",
-    "short_name": "grocery_app",
+    "name": "shoppingmall",
+    "short_name": "shoppingmall",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

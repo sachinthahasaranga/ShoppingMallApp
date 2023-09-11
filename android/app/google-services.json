@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1084439159979",
+    "project_id": "shopvista-shopping-mall",
+    "storage_bucket": "shopvista-shopping-mall.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1084439159979:android:ec92c29dbef72115c183ee",
+        "android_client_info": {
+          "package_name": "com.example.shoppingmall"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1084439159979-5ecka42mj2276p75cso69irh32p4250m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.shoppingmall",
+            "certificate_hash": "df670b8ed01eeabd9d6693ea3f4941f401153aca"
+          }
+        },
+        {
+          "client_id": "1084439159979-851n3phtbripbub7j0kgvsiccemsdm1b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAnwcZUFNAMKYU3nYkJvK39cR_mJBnUoHQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1084439159979-851n3phtbripbub7j0kgvsiccemsdm1b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

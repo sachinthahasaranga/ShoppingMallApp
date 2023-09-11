@@ -1,60 +1,58 @@
 import 'dart:async';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:grocery_app/screens/onboard_screen.dart';
-import 'screens/register_screen.dart';
+import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+import 'package:shoppingmall/providers/auth_provider.dart';
+import 'package:shoppingmall/providers/location_provider.dart';
+import 'package:shoppingmall/providers/product_provider.dart';
+import 'package:shoppingmall/screens/add_newproduct_screen.dart';
+import 'package:shoppingmall/screens/auth_screen.dart';
+import 'package:shoppingmall/screens/home_screen.dart';
+import 'package:shoppingmall/screens/login_screen.dart';
+import 'package:shoppingmall/screens/map_screen.dart';
+import 'package:shoppingmall/screens/onboarding_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:shoppingmall/screens/welcome_screen.dart';
 
-void main() {
-  runApp(const MyApp());
+import 'screens/splash_screen.dart';
+
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
+  runApp(
+    MultiProvider(
+      providers: [
+        Provider(create: (_)=>AuthProvider(),),
+        Provider(create: (_)=>LocationProvider(),),
+        Provider(create: (_)=>ProductProvider()),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
-
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  //const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: SplashScreen(),
-    );
-  }
-}
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+            primaryColor: Colors.deepPurple
+        ),
+        initialRoute: SplashScreen.id,
+        routes: {
+          SplashScreen.id:(context)=>SplashScreen(),
+          HomeScreen.id:(context)=>HomeScreen(),
+          WelcomeScreen.id:(context)=>WelcomeScreen(),
+          MapScreen.id:(context)=>MapScreen(),
+          AuthScreen.id:(context)=>AuthScreen(),
+          AddNewProduct.id:(context)=>AddNewProduct(),
 
-class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
-
-  @override
-  State<SplashScreen> createState() => _SplashScreenState();
-}
-
-class _SplashScreenState extends State<SplashScreen> {
-
-  @override
-  void initState() {
-    Timer(
-      Duration(
-        seconds: 3,
-      ),(){
-        Navigator.pushReplacement(context, MaterialPageRoute(
-            builder: (context)=>OnBoardScreen(),
-        ));
+    },
+        );
     }
-    );
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Image.asset('images/logo.png'),
-              Text('Shopping Mall',style: TextStyle(fontSize: 15),)
-            ],
-            )
-      ),
-    );
-  }
 }
