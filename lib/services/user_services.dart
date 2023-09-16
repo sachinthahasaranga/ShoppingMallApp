@@ -5,7 +5,7 @@ import 'package:shoppingmall/models/user_model.dart';
 class UserServices{
 
   String collection = 'users';
-   FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   // create new user
   Future<void> createUserData(Map<String, dynamic>values)async{
@@ -23,11 +23,11 @@ class UserServices{
   Future<void> getUserById(String id)async{
     await _firestore.collection(collection).doc(id).get()
         .then((doc){
-          if(doc.data() == null){
-            return null;
-          }
+      if(doc.data() == null){
+        return null;
+      }
 
-          return UserModel.fromSnapshot(doc);
+      return UserModel.fromSnapshot(doc);
     });
   }
 }

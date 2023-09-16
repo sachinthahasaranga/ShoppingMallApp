@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:shoppingmall/screens/feedback_display.dart';
 
 void main() {
   runApp(FeedbackFormApp());
@@ -117,22 +119,79 @@ class _FeedbackFormState extends State<FeedbackForm> {
 
               // Add more questions in a similar format
 
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    // Form is valid, you can submit the data here
-                    // For example, you can print the values to the console
-                    print('Personal Shopping Assistant: $personalShoppingAssistant');
-                    print('Most Exciting Item: $mostExcitingItem');
-                    print('Shopping Speed: $shoppingSpeed');
-                    // Add more print statements for other questions
+              Center(
+                child: ElevatedButton(
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      // Create a Firestore instance
+                      final firestore = FirebaseFirestore.instance;
 
-                    // Optionally, you can reset the form
-                    _formKey.currentState!.reset();
-                  }
-                },
-                child: Text('Submit'),
+                      // Define a map to store the user's feedback data
+                      final userData = {
+                        'personal Shopping Assistant': personalShoppingAssistant,
+                        'most Exciting Item': mostExcitingItem,
+                        'shopping Speed': shoppingSpeed,
+                        'innovative Ideas': innovativeIdeas,
+                        // Add more fields for other questions
+                      };
+
+                      try {
+                        // Add the data to Firestore
+                        await firestore.collection('feedback').add(userData);
+
+                        // Optionally, you can reset the form
+                        _formKey.currentState!.reset();
+
+                        // Show a success message using a SnackBar
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            backgroundColor: Colors.green, // Background color
+                            elevation: 6.0, // Shadow elevation
+                            behavior: SnackBarBehavior.floating, // Floating design
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12.0), // Rounded corners
+                            ),
+                            content: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.check_circle,
+                                  color: Colors.white, // Icon color
+                                  size: 24.0, // Icon size
+                                ),
+                                SizedBox(width: 8.0),
+                                Text(
+                                  'Feedback submitted successfully!',
+                                  style: TextStyle(
+                                    color: Colors.white, // Text color
+                                    fontSize: 16.0, // Text size
+                                  ),
+                                ),
+                              ],
+                            ),
+                            duration: Duration(seconds: 2), // You can adjust the duration as needed
+                          ),
+                        );
+
+
+                        // Navigate to the FeedbackDisplayScreen and pass the entered data
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => FeedbackDisplayScreen(userData: userData),
+                          ),
+                        );
+                      } catch (e) {
+                        // Handle any potential errors here
+                        print('Error submitting feedback: $e');
+                      }
+                    }
+                  },
+                  child: Text('Submit'),
+                ),
               ),
+
+
             ],
           ),
         ),
@@ -162,3 +221,15 @@ class _FeedbackFormState extends State<FeedbackForm> {
     );
   }
 }
+
+Future<List<Map<String, dynamic>>> fetchFeedbackData() async {
+  final firestore = FirebaseFirestore.instance;
+  final querySnapshot = await firestore.collection('feedback').get();
+
+  return querySnapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+<<<<<<< HEAD
+}
+=======
+}
+
+>>>>>>> origin/master
