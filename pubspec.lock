@@ -326,7 +326,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.16"
-<<<<<<< HEAD
   flutter_slider_drawer:
     dependency: "direct main"
     description:
@@ -343,8 +342,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.2"
-=======
->>>>>>> origin/master
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -375,17 +372,10 @@ packages:
     dependency: transitive
     description:
       name: geolocator_android
-<<<<<<< HEAD
       sha256: db75aacf93fcdc2c0ba20066019da30e3fde7b102cf579d4bd4ea542e8a8cf17
       url: "https://pub.dev"
     source: hosted
     version: "4.2.4"
-=======
-      sha256: "835ff5b4888a2f8eba128996494faf9c5d422785322a81dc0565b99e0f6c379d"
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.2.2"
->>>>>>> origin/master
   geolocator_apple:
     dependency: transitive
     description:
@@ -426,7 +416,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.2"
-<<<<<<< HEAD
   google_maps:
     dependency: transitive
     description:
@@ -475,8 +464,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.5.4+2"
-=======
->>>>>>> origin/master
   html:
     dependency: transitive
     description:
@@ -513,17 +500,10 @@ packages:
     dependency: transitive
     description:
       name: image_picker_android
-<<<<<<< HEAD
       sha256: "47da2161c2e9f8f8a9cbbd89d466d174333fbdd769aeed848912e0b16d9cb369"
       url: "https://pub.dev"
     source: hosted
     version: "0.8.8"
-=======
-      sha256: d32a997bcc4ee135aebca8e272b7c517927aa65a74b9c60a81a2764ef1a0462d
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.8.7+5"
->>>>>>> origin/master
   image_picker_for_web:
     dependency: transitive
     description:
@@ -728,17 +708,10 @@ packages:
     dependency: transitive
     description:
       name: permission_handler_android
-<<<<<<< HEAD
       sha256: "59c6322171c29df93a22d150ad95f3aa19ed86542eaec409ab2691b8f35f9a47"
       url: "https://pub.dev"
     source: hosted
     version: "10.3.6"
-=======
-      sha256: "91799aea5efe1873e176e17fd9464b5d8f886939d6ac3373f643b09821bf3bda"
-      url: "https://pub.dev"
-    source: hosted
-    version: "10.3.5"
->>>>>>> origin/master
   permission_handler_apple:
     dependency: transitive
     description:
@@ -795,7 +768,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.4"
-<<<<<<< HEAD
   sanitize_html:
     dependency: transitive
     description:
@@ -804,8 +776,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.0"
-=======
->>>>>>> origin/master
   shared_preferences:
     dependency: "direct main"
     description:
@@ -989,8 +959,4 @@ packages:
     version: "3.1.2"
 sdks:
   dart: ">=3.1.0 <4.0.0"
-<<<<<<< HEAD
   flutter: ">=3.13.0"
-=======
-  flutter: ">=3.7.0"
->>>>>>> origin/master
