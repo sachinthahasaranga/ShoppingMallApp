@@ -65,12 +65,9 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-<<<<<<< HEAD
       appBar: AppBar(
         title: Text('Chat bot'),
       ),
-=======
->>>>>>> origin/master
       body: Column(
         children: <Widget>[
           Expanded(
@@ -180,8 +177,4 @@ class ChatMessage extends StatelessWidget {
       ),
     );
   }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> origin/master

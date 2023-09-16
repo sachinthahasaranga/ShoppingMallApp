@@ -227,9 +227,4 @@ Future<List<Map<String, dynamic>>> fetchFeedbackData() async {
   final querySnapshot = await firestore.collection('feedback').get();
 
   return querySnapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
-<<<<<<< HEAD
 }
-=======
-}
-
->>>>>>> origin/master

@@ -19,10 +19,6 @@ class LocationProvider with ChangeNotifier{
     }else{
       print('Permission Not Allowed');
     }
-<<<<<<< HEAD
   }
-=======
-    }
->>>>>>> origin/master
 
 }

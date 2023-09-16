@@ -7,7 +7,7 @@ import 'package:shoppingmall/screens/map_screen.dart';
 import 'package:shoppingmall/screens/onboarding_screen.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import 'chat_bot_app.dart';
+import 'feedback_screen.dart';
 
 class WelcomeScreen extends StatefulWidget {
   //const WelcomeScreen({super.key});
@@ -215,43 +215,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Navigate to the ChatbotApp when the button is pressed
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ChatbotApp(),
-            ),
-          );
-        },
-        child: Icon(Icons.chat_bubble),
-        backgroundColor: Colors.deepPurple, // Customize the button's color
-      ),
-    );
-  }
-<<<<<<< HEAD
-}
-=======
-}
-
-void main() {
-  runApp(ChatbotApp());
-}
-
-class ChatbotApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        primaryColor: Colors.blue,
-        colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.blueAccent), // Set your accent color
-      ),
-      home: ChatScreen(),
     );
   }
 }
-
-// Define your ChatScreen, AuthProvider, and other widgets here
-
->>>>>>> origin/master
