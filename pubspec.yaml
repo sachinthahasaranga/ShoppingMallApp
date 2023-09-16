@@ -26,6 +26,11 @@ dependencies:
   carousel_slider: ^4.2.1
   flutter_slider_drawer: ^2.0.0
   flutter_slider_drawer_v: ^2.0.2
+  image_picker: ^1.0.4
+  email_validator: ^2.1.17
+  location: ^5.0.0
+  firebase_storage: ^11.2.6
+
 
 dev_dependencies:
   flutter_test:

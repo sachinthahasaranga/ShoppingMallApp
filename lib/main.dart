@@ -14,6 +14,8 @@ import 'package:shoppingmall/screens/map_screen.dart';
 import 'package:shoppingmall/screens/onboarding_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:shoppingmall/screens/welcome_screen.dart';
+import 'package:shoppingmall/widgets/reset_password_screen.dart';
+
 
 import 'screens/splash_screen.dart';
 
@@ -31,6 +33,20 @@ void main() async{
       child: MyApp(),
     ),
   );
+  // runApp(
+  //   MultiProvider(
+  //     providers: [
+  //       ChangeNotifierProvider(
+  //         create: (_)=>AuthProvider(),
+  //       ),
+  //       ChangeNotifierProvider(
+  //         create: (_)=>LocationProvider(),
+  //       ),
+  //
+  //     ],
+  //     child: MyApp(),
+  //   ),
+  // );
 }
 
 class MyApp extends StatelessWidget {
@@ -51,6 +67,8 @@ class MyApp extends StatelessWidget {
           MapScreen.id:(context)=>MapScreen(),
           AuthScreen.id:(context)=>AuthScreen(),
           AddNewProduct.id:(context)=>AddNewProduct(),
+          SignInScreen.id:(context)=>SignInScreen(),
+          ResetPassword.id:(context)=>ResetPassword(),
 
     },
         );
