@@ -137,7 +137,7 @@ class AuthProvider with ChangeNotifier{
         });
   }
 
-
+//reduce image size
   Future<File> getImage() async {
 
     final picker = ImagePicker();

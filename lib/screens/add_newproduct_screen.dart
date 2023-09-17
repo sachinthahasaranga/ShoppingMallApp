@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shoppingmall/widgets/category_list.dart';
@@ -24,6 +26,9 @@ class _AddNewProductState extends State<AddNewProduct> {
 
   var _categoryTextController = TextEditingController();
   var _subCategoryTextController = TextEditingController();
+  File? _image;
+  bool _visible = false;
+  bool _track = false;
 
 
   @override
@@ -120,12 +125,23 @@ class _AddNewProductState extends State<AddNewProduct> {
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: SizedBox(
-                                      width: 150,
-                                      height: 150,
-                                      child: Card(
-                                        child: Center(
-                                          child: Text('Product Image'),
+                                    child: InkWell(
+                                      onTap: (){
+                                        _provider.getProductImage().then((image) {
+                                          setState(() {
+                                            _image = image;
+                                          });
+                                        });
+                                      },
+
+                                      child: SizedBox(
+                                        width: 150,
+                                        height: 150,
+                                        child: Card(
+                                          child: Center(
+                                            child: _image==null? Text('Select Image') : Image.file(_image!),
+
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -247,6 +263,7 @@ class _AddNewProductState extends State<AddNewProduct> {
                                                 setState(() {
                                                   _categoryTextController.text=
                                                       _provider.selectedCategory;
+                                                  _visible = true;
                                                 });
                                             });
                                           },
@@ -254,20 +271,114 @@ class _AddNewProductState extends State<AddNewProduct> {
                                       ],
                                     ),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top : 10,bottom: 20),
-                                    child: Row(
-                                      children:[
-                                        Text(
-                                          'Sub Category',
-                                          style: TextStyle(color: Colors.grey,fontSize: 16),
+                                  Visibility(
+                                    visible: _visible,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(top : 10,bottom: 20),
+                                      child: Row(
+                                        children:[
+                                          Text(
+                                            'Sub Category',
+                                            style: TextStyle(color: Colors.grey,fontSize: 16),
+                                          ),
+                                          SizedBox(width: 10,),
+                                          Expanded(
+                                            child: TextFormField(
+                                              controller: _subCategoryTextController,
+                                              decoration: const InputDecoration(
+                                                hintText: 'Not Selected', //
+                                                labelStyle: TextStyle(color: Colors.grey),
+                                                enabledBorder: UnderlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                    color: Colors.grey,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          IconButton(
+                                            icon: Icon(Icons.edit_outlined),
+                                            onPressed: (){
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (BuildContext context){
+                                                    return SubCategoryList();
+                                                  }
+                                              ).whenComplete(() {
+                                                setState(() {
+                                                  _subCategoryTextController.text=
+                                                      _provider.selectedSubCategory;
+                                                });
+                                              });
+                                            },
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  TextFormField(
+                                    decoration: const InputDecoration(
+                                      labelText: 'Weight. eg:- Kg, gm, etc', //item weight
+                                      labelStyle: TextStyle(color: Colors.grey),
+                                      enabledBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Colors.grey,
                                         ),
-                                        SizedBox(width: 10,),
-                                        Expanded(
-                                          child: TextFormField(
-                                            controller: _subCategoryTextController,
+                                      ),
+                                    ),
+                                  ),
+                                  TextFormField(
+                                    keyboardType: TextInputType.number,
+                                    decoration: const InputDecoration(
+                                      labelText: 'Tax %', //item code
+                                      labelStyle: TextStyle(color: Colors.grey),
+                                      enabledBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+
+
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        SingleChildScrollView(
+                          child: Column(
+                            children:[
+                              SwitchListTile(
+                                title : Text('Track Inventory'),
+                                activeColor: Theme.of(context).primaryColor,
+                                subtitle: Text('Switch ON to track Inventory',
+                                  style: TextStyle(
+                                      color: Colors.grey,fontSize: 12
+                                  ),
+                                ),
+                                value: _track,
+                                onChanged: (selected){
+                                  setState(() {
+                                    _track = !_track;
+                                  });
+                                },
+                              ),
+                              Visibility(
+                                visible: _track,
+                                child: SizedBox(
+                                  height: 300,
+                                  width: double.infinity,
+                                  child: Card(
+                                    elevation: 3,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Column(
+                                        children: [
+                                          TextField(
+                                            keyboardType: TextInputType.number,
                                             decoration: const InputDecoration(
-                                              hintText: 'Not Selected', //
+                                              labelText: 'Inventory Quantity', //item code
                                               labelStyle: TextStyle(color: Colors.grey),
                                               enabledBorder: UnderlineInputBorder(
                                                 borderSide: BorderSide(
@@ -276,37 +387,33 @@ class _AddNewProductState extends State<AddNewProduct> {
                                               ),
                                             ),
                                           ),
-                                        ),
-                                        IconButton(
-                                          icon: Icon(Icons.edit_outlined),
-                                          onPressed: (){
-                                            showDialog(
-                                                context: context,
-                                                builder: (BuildContext context){
-                                                  return SubCategoryList();
-                                                }
-                                            ).whenComplete(() {
-                                              setState(() {
-                                                _categoryTextController.text=
-                                                    _provider.selectedCategory;
-                                              });
-                                            });
-                                          },
-                                        )
-                                      ],
+                                          TextField(
+                                            keyboardType: TextInputType.number,
+                                            decoration: const InputDecoration(
+                                              labelText: 'Inventory Low Stock Quantity', //item code
+                                              labelStyle: TextStyle(color: Colors.grey),
+                                              enabledBorder: UnderlineInputBorder(
+                                                borderSide: BorderSide(
+                                                  color: Colors.grey,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ],
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                        Text('ssss'),
                       ],
                     ),
                   ),
                 ),
-              )
+              ),
+
             ],
           ),
         ),

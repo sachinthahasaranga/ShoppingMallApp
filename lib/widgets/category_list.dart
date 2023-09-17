@@ -128,33 +128,30 @@ class _SubcategoryListState extends State<SubCategoryList> {
                 if(snapshot.hasError){
                   return Text('Something Went wrong...');
                 }
-                if(snapshot.connectionState == ConnectionState.waiting){
-                  return Center(child: CircularProgressIndicator(),);
-                }
-                //Map<String, dynamic>data= snapshot.data.data();
-                Map<String, dynamic>? data = snapshot.data?.data() as Map<String, dynamic>?;
+                if(snapshot.connectionState == ConnectionState.done){
 
-                return Expanded(
-                  child: Column(
-                   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          child: Row(
-                            children: [
-                              Text('Main Category :  '),
-                              FittedBox(child: Text(_provider.selectedCategory,style: TextStyle(fontWeight: FontWeight.bold ),)),
-                            ],
+                  Map<String, dynamic>? data = snapshot.data?.data() as Map<String, dynamic>?;
+                  return Expanded(
+                    child: Column(
+                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            child: Row(
+                              children: [
+                                Text('Main Category :  '),
+                                FittedBox(child: Text(_provider.selectedCategory,style: TextStyle(fontWeight: FontWeight.bold ),)),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      Divider(thickness: 3,),
-                      Container(
-                        child: Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: ListView.builder(
+                        Divider(thickness: 3,),
+                        Container(
+                          child: Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: ListView.builder(
                                 itemBuilder: (BuildContext context, int index){
                                   return ListTile(
                                     contentPadding: EdgeInsets.zero,
@@ -170,17 +167,20 @@ class _SubcategoryListState extends State<SubCategoryList> {
 
                                   );
                                 },
-                              //itemCount: data['subCat']==null ? 0: data['subCat'].length,
-                              //need to check and correct
+                                //itemCount: data['subCat']==null ? 0: data['subCat'].length,
+                                //need to check and correct
 
+                              ),
                             ),
                           ),
-                        ),
-                      )
+                        )
 
-                    ],
-                  ),
-                );
+                      ],
+                    ),
+                  );
+                }
+                //Map<String, dynamic>data= snapshot.data.data();
+                return Center(child: CircularProgressIndicator(),);
               }
           ),
 
