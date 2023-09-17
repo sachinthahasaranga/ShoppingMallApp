@@ -26,9 +26,17 @@ class _AddNewProductState extends State<AddNewProduct> {
 
   var _categoryTextController = TextEditingController();
   var _subCategoryTextController = TextEditingController();
+  var _comparedPriceTextController = TextEditingController();
+  var _brandTextController = TextEditingController();
   File? _image;
   bool _visible = false;
   bool _track = false;
+
+  String? productName;
+  String? description;
+  double? price;
+  double? comparedPrice;
+  String? sku;
 
 
   @override
@@ -38,6 +46,7 @@ class _AddNewProductState extends State<AddNewProduct> {
 
     return DefaultTabController(
       length: 2,
+      initialIndex: 1,  //will keep initial index 1 to avoid textfeild clearing automatically
       child: Scaffold(
         appBar: AppBar(),
         body: Form(
@@ -102,6 +111,15 @@ class _AddNewProductState extends State<AddNewProduct> {
                               child: Column(
                                 children: [
                                   TextFormField(
+                                    validator: (value){
+                                      if(value!.isEmpty){
+                                        return 'Enter Product Name';
+                                      }
+                                      setState(() {
+                                        productName = value;
+                                      });
+                                      return null;
+                                    },
                                     decoration: InputDecoration(
                                       labelText: 'Product Name',
                                       labelStyle: TextStyle(color: Colors.grey),
@@ -113,6 +131,15 @@ class _AddNewProductState extends State<AddNewProduct> {
                                     ),
                                   ),
                                   TextFormField(
+                                    validator: (value){
+                                      if(value!.isEmpty){
+                                        return 'Enter Description';
+                                      }
+                                      setState(() {
+                                        description = value;
+                                      });
+                                      return null;
+                                    },
                                     decoration: InputDecoration(
                                       labelText: 'About product',
                                       labelStyle: TextStyle(color: Colors.grey),
@@ -147,6 +174,15 @@ class _AddNewProductState extends State<AddNewProduct> {
                                     ),
                                   ),
                                   TextFormField(
+                                    validator: (value){
+                                      if(value!.isEmpty){
+                                        return 'Enter selling price';
+                                      }
+                                      setState(() {
+                                        price = double.parse(value);
+                                      });
+                                      return null;
+                                    },
                                     keyboardType: TextInputType.number,
                                     decoration: InputDecoration(
                                       labelText: 'Price', //final setting price
@@ -159,6 +195,18 @@ class _AddNewProductState extends State<AddNewProduct> {
                                     ),
                                   ),
                                   TextFormField(
+                                    controller: _comparedPriceTextController,
+                                    validator: (value){
+                                      //not compulsory
+                                      // if(value!.isEmpty){
+                                      //   return 'Enter Compared price';
+                                      // }
+                                      if(price!>double.parse(value!)){
+                                        return 'Compared price should be heigher than price';
+                                      }
+
+                                      return null;
+                                    },
                                     keyboardType: TextInputType.number,
                                     decoration: const InputDecoration(
                                       labelText:
@@ -203,7 +251,9 @@ class _AddNewProductState extends State<AddNewProduct> {
                                     ),
                                   ),
                                   TextFormField(
+                                    controller: _brandTextController,
                                     decoration: const InputDecoration(
+                                      //validator not compulsory
                                       labelText: 'Brand',
                                       labelStyle: TextStyle(color: Colors.grey),
                                       enabledBorder: UnderlineInputBorder(
@@ -214,6 +264,15 @@ class _AddNewProductState extends State<AddNewProduct> {
                                     ),
                                   ),
                                   TextFormField(
+                                    validator: (value){
+                                      if(value!.isEmpty){
+                                        return 'Enter SKU';
+                                      }
+                                      setState(() {
+                                        sku = value;
+                                      });
+                                      return null;
+                                    },
                                     decoration: const InputDecoration(
                                       labelText: 'SKU', //item code
                                       labelStyle: TextStyle(color: Colors.grey),
@@ -238,14 +297,23 @@ class _AddNewProductState extends State<AddNewProduct> {
                                         ),
                                         SizedBox(width: 10,),
                                         Expanded(
-                                          child: TextFormField(
-                                            controller: _categoryTextController,
-                                            decoration: const InputDecoration(
-                                              hintText: 'Not Selected', //
-                                              labelStyle: TextStyle(color: Colors.grey),
-                                              enabledBorder: UnderlineInputBorder(
-                                                borderSide: BorderSide(
-                                                  color: Colors.grey,
+                                          child: AbsorbPointer(
+                                            absorbing: true, //this will block user enter category manually
+                                            child: TextFormField(
+                                              controller: _categoryTextController,
+                                              validator: (value){
+                                                if(value!.isEmpty){
+                                                  return 'Select Catergory Name';
+                                                }
+                                                return null;
+                                              },
+                                              decoration: const InputDecoration(
+                                                hintText: 'Not Selected', //
+                                                labelStyle: TextStyle(color: Colors.grey),
+                                                enabledBorder: UnderlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                    color: Colors.grey,
+                                                  ),
                                                 ),
                                               ),
                                             ),
@@ -271,6 +339,7 @@ class _AddNewProductState extends State<AddNewProduct> {
                                       ],
                                     ),
                                   ),
+                                  //subCatergoryStart
                                   Visibility(
                                     visible: _visible,
                                     child: Padding(
