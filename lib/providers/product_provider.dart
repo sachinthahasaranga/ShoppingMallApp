@@ -34,7 +34,7 @@ class ProductProvider with ChangeNotifier{
     //remove all existing data before update next product
     this.selectedCategory=null;
     this.selectedSubCategory=null;
-    this.categoryImage=null;
+    //this.categoryImage=null;
     this.image=null;
     this.productUrl=null;
     notifyListeners();
