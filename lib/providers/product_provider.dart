@@ -6,13 +6,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ProductProvider with ChangeNotifier{
-  String selectedCategory = 'not selected';
-  String selectedSubCategory = 'not selected';
-  String? categoryImage = '';
+  String? selectedCategory;
+  String? selectedSubCategory;
+  String? categoryImage;
   File? image;
-  String pickerError = '';
-  String shopName= ''; //bring shop name here
-  String productUrl='';
+  String? pickerError;
+  String? shopName;
+  String? productUrl;
 
   selectCategory(mainCategory,categoryImage){
     this.selectedCategory = mainCategory;
@@ -28,6 +28,17 @@ class ProductProvider with ChangeNotifier{
   getShopName(shopName){
     this.shopName = shopName;
     notifyListeners();
+  }
+
+  resetProvider(){
+    //remove all existing data before update next product
+    this.selectedCategory=null;
+    this.selectedSubCategory=null;
+    this.categoryImage=null;
+    this.image=null;
+    this.productUrl=null;
+    notifyListeners();
+
   }
 
   //upload product image
@@ -124,6 +135,68 @@ class ProductProvider with ChangeNotifier{
         'published' : false,  //keep the initial value as false
         'productId' : timeStamp.toString(),
         'productImage': this.productUrl,
+      });
+      this.alertDialog(
+        context: context,
+        title: 'SAVE DATA',
+        content: 'Product Details saved successfully',
+      );
+
+    } catch(e){
+      this.alertDialog(
+          context: context,
+          title: 'SAVE DATA',
+          content: '${e.toString()}'
+      );
+
+    }
+    return null;
+
+  }
+
+  //update product to database
+  Future<void>updateProduct(
+      //need to bring these from add product screen
+          {
+        productName,
+        description,
+        price,
+        comparedPrice,
+        collection,
+        brand,
+        sku,
+        weight,
+        tax,
+        stockQty,
+        lowStockQty,
+        context,
+        productId,
+        image,
+        category,
+        //subcategory,
+        categoryImage,
+      }
+      )async {
+    CollectionReference _products = FirebaseFirestore.instance.collection('products');
+    try{
+      _products.doc(productId).update({
+        'productName' : productName,
+        'description' : description,
+        'price' : price,
+        'comparedPrice' : comparedPrice,
+        'collection' : collection,
+        'brand' : brand,
+        'sku' : sku,
+        'category' : {
+          'mainCategory' : category,
+          //'subCategory' : subCategory,
+          'categoryImage' : this.categoryImage == null? categoryImage : this.categoryImage
+        },
+        'weight' : weight,
+        'tax' : tax,
+        'stockQty': stockQty,
+        'lowStockQty' : lowStockQty,
+        'productImage': this.productUrl == null? image : this.productUrl,
       });
       this.alertDialog(
         context: context,

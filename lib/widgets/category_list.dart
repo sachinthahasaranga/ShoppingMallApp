@@ -141,7 +141,7 @@ class _SubcategoryListState extends State<SubCategoryList> {
                             child: Row(
                               children: [
                                 Text('Main Category :  '),
-                                FittedBox(child: Text(_provider.selectedCategory,style: TextStyle(fontWeight: FontWeight.bold ),)),
+                                FittedBox(child: Text(_provider.selectedCategory!,style: TextStyle(fontWeight: FontWeight.bold ),)),
                               ],
                             ),
                           ),

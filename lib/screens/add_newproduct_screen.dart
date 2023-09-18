@@ -420,7 +420,7 @@ class _AddNewProductState extends State<AddNewProduct> {
                                             ).whenComplete(() {
                                                 setState(() {
                                                   _categoryTextController.text=
-                                                      _provider.selectedCategory;
+                                                      _provider.selectedCategory!;
                                                   _visible = true;
                                                 });
                                             });

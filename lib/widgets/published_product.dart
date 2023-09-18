@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:shoppingmall/services/firebase_services.dart';
 
+import '../screens/edit_view_product.dart';
+
 
 class PublishedProducts extends StatelessWidget {
   const PublishedProducts({super.key});
@@ -21,16 +23,19 @@ class PublishedProducts extends StatelessWidget {
               return Center(child: CircularProgressIndicator(),);
             }
             return SingleChildScrollView(
-              child: DataTable(
-                showBottomBorder: true,
-                dataRowMaxHeight: 60,
-                headingRowColor: MaterialStateProperty.all(Colors.grey[200]),
-                columns: <DataColumn>[
-                  DataColumn(label: Expanded(child: Text('Product Name')),),
-                  DataColumn(label: Text('Image'),),
-                  DataColumn(label: Text('Actions'),),
-                ],
-                rows: _productDetails(snapshot.data),
+              child: FittedBox(
+                child: DataTable(
+                  showBottomBorder: true,
+                  dataRowMaxHeight: 60,
+                  headingRowColor: MaterialStateProperty.all(Colors.grey[200]),
+                  columns: <DataColumn>[
+                    DataColumn(label: Expanded(child: Text('Product')),),
+                    DataColumn(label: Text('Image'),),
+                    DataColumn(label: Text('Info'),),
+                    DataColumn(label: Text('Actions'),),
+                  ],
+                  rows: _productDetails(snapshot.data,context),
+                ),
               ),
             );
           }
@@ -40,7 +45,7 @@ class PublishedProducts extends StatelessWidget {
   }
 
 
-  List<DataRow> _productDetails(QuerySnapshot<Object?>? snapshot) {
+  List<DataRow> _productDetails(QuerySnapshot<Object?>? snapshot,context) {
     if (snapshot == null || snapshot.docs.isEmpty) {
       return []; // Return an empty list when the snapshot is null or empty.
     }
@@ -50,6 +55,7 @@ class PublishedProducts extends StatelessWidget {
         final data = document.data() as Map<String, dynamic>?;
         final productName = data?['productName'] as String;
         final productImage = data?['productImage'] as String;
+        final productID = data?['productId'] as String;
         final sku = data?['sku'] as String;
 
         return DataRow(
@@ -59,7 +65,7 @@ class PublishedProducts extends StatelessWidget {
                 contentPadding: EdgeInsets.zero,
                 title: Row(
                   children: [
-                    Expanded(child: Text('Name', style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15))),
+                    Text('Name:  ', style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15)),
                     Expanded(child: Text(productName, style: TextStyle(fontSize: 15))),
                   ],
                 ),
@@ -73,10 +79,23 @@ class PublishedProducts extends StatelessWidget {
             ),
             DataCell(
               Container(child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Image.network(productImage),
+                padding: const EdgeInsets.all(3.0),
+                child: Row(
+                  children: [
+                    Image.network(productImage,width: 50,),
+                  ],
+                ),
               ),),
             ),
+
+            DataCell(
+                IconButton(onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>EditViewProduct(
+                    productId: productID,
+                  )));
+                },icon: Icon(Icons.info_outline),)
+            ),
+
             DataCell(
                 popUpButton(data)
             ),
@@ -107,12 +126,6 @@ class PublishedProducts extends StatelessWidget {
               title: Text('Un Publish'),
             ),),
 
-          const PopupMenuItem<String>(
-            value: 'preview',
-            child: ListTile(
-              leading: Icon(Icons.info_outline),
-              title: Text('Preview'),
-            ),),
 
 
         ]
