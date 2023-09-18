@@ -11,7 +11,8 @@ class ProductProvider with ChangeNotifier{
   String? categoryImage = '';
   File? image;
   String pickerError = '';
-  String shopName= ''; //we need to bring shop name here
+  String shopName= ''; //bring shop name here
+  String productUrl='';
 
   selectCategory(mainCategory,categoryImage){
     this.selectedCategory = mainCategory;
@@ -39,10 +40,13 @@ class ProductProvider with ChangeNotifier{
     try{
       await _storage.ref('productImage/${this.shopName}$productName$timeStamp').putFile(file);
     }on FirebaseException catch (e){
+      //e.g e.code canceled
       print(e.code);
     }
     String downloadURL = await _storage
         .ref('productImage/${this.shopName}$productName$timeStamp').getDownloadURL();
+    this.productUrl = downloadURL;
+    notifyListeners();
     return downloadURL;
   }
 
@@ -69,7 +73,9 @@ class ProductProvider with ChangeNotifier{
         title: Text(title),
         content: Text(content),
         actions: [
-          CupertinoDialogAction(child: Text('OK')),
+          CupertinoDialogAction(child: Text('OK'),onPressed: (){
+            Navigator.pop(context);
+          },),
         ],
       );
     });
@@ -117,6 +123,7 @@ class ProductProvider with ChangeNotifier{
         'lowStockQty' : lowStockQty,
         'published' : false,  //keep the initial value as false
         'productId' : timeStamp,
+        'productImage': this.productUrl,
       });
       this.alertDialog(
         context: context,
@@ -128,7 +135,7 @@ class ProductProvider with ChangeNotifier{
       this.alertDialog(
           context: context,
           title: 'SAVE DATA',
-          content: '${e.toString()},
+          content: '${e.toString()}'
       );
 
     }

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
 import 'package:shoppingmall/widgets/category_list.dart';
 
@@ -29,6 +30,8 @@ class _AddNewProductState extends State<AddNewProduct> {
   var _comparedPriceTextController = TextEditingController();
   var _brandTextController = TextEditingController();
   var _lowStockTextController = TextEditingController();
+  var _stockTextController = TextEditingController();
+
   File? _image;
   bool _visible = false;
   bool _track = false;
@@ -40,7 +43,7 @@ class _AddNewProductState extends State<AddNewProduct> {
   String? sku;
   String? weight;
   double? tax;
-  int? stockQty;
+  //int? stockQty;
 
 
   @override
@@ -86,45 +89,69 @@ class _AddNewProductState extends State<AddNewProduct> {
                         onPressed: () {
                           if(_formkey.currentState!.validate()){
                             //only if filled neccessary field
-                            if(_image!=null){
-                              //image should be selected
-                              //upload image to storage
-                              _provider.uploadProductImage(_image!.path, productName).then((url){
-                                if(url!=null){
-                                  //upload product data to firebase
-                                  _provider.saveProductDataToDb(
-                                    context: context,
-                                    comparedPrice: _comparedPriceTextController.text,
-                                    brand: _brandTextController.text,
-                                    collection: dropdownValue,
-                                    description: description,
-                                    lowStockQty: _lowStockTextController.text,
-                                    price: price,
-                                    sku: sku,
-                                    stockQty: stockQty,
-                                    tax: tax,
-                                    weight: weight,
-                                    productName: productName,
+                            if(_categoryTextController.text.isNotEmpty){
+                             //if(_subCategoryTextController.text.isNotEmpty){
+                                if(_image!=null){
+                                  //image should be selected
+                                  //upload image to storage
+                                  EasyLoading.show(status: 'Saving...');
+                                  _provider.uploadProductImage(_image!.path, productName).then((url){
+                                    if(url!=null){
+                                      //upload product data to firestore
+                                      EasyLoading.dismiss();
+                                      _provider.saveProductDataToDb(
+                                        context: context,
+                                        comparedPrice: int.parse(_comparedPriceTextController.text),
+                                        brand: _brandTextController.text,
+                                        collection: dropdownValue,
+                                        description: description,
+                                        lowStockQty: int.parse(_lowStockTextController.text),
+                                        price: price,
+                                        sku: sku,
+                                        stockQty: int.parse(_stockTextController.text),
+                                        tax: tax,
+                                        weight: weight,
+                                        productName: productName,
 
-                                  );
+                                      );
 
+                                      setState(() {
+                                        _formkey.currentState?.reset();
+                                      });
+
+                                    }
+                                    else{
+                                      //upload failed
+                                      _provider.alertDialog(
+                                        context: context,
+                                        title: 'IMAGE UPLOAD',
+                                        content: 'Faild to upload product image',
+                                      );
+                                    }
+                                  });
                                 }
                                 else{
-                                  //upload failed
+                                  //image not selected
                                   _provider.alertDialog(
-                                      context: context,
-                                      title: 'IMAGE UPLOAD',
-                                      content: 'Faild to upload product image',
+                                    context: context,
+                                    title: 'PRODUCT IMAGE',
+                                    content: 'Product Image not selected',
                                   );
                                 }
-                              });
-                            }
-                            else{
-                              //image not selected
+                              //}
+                              // else{
+                              //   _provider.alertDialog(
+                              //       context: context,
+                              //       title: 'Sub Catergory',
+                              //       content: 'Sub catergory not selected'
+                              //   );
+                              // }
+
+                            } else{
                               _provider.alertDialog(
                                 context: context,
-                                title: 'PRODUCT IMAGE',
-                                content: 'Product Image not selected',
+                                title: 'Main Catergory',
+                                content: 'Main catergory not selected'
                               );
                             }
 
@@ -181,6 +208,10 @@ class _AddNewProductState extends State<AddNewProduct> {
                                     ),
                                   ),
                                   TextFormField(
+                                    keyboardType: TextInputType.multiline,
+                                    maxLines: 5,
+                                    maxLength: 500,
+
                                     validator: (value){
                                       if(value!.isEmpty){
                                         return 'Enter Description';
@@ -522,17 +553,7 @@ class _AddNewProductState extends State<AddNewProduct> {
                                       child: Column(
                                         children: [
                                           TextFormField(
-                                            validator: (value){
-                                              if(_track){
-                                                if(value!.isEmpty){
-                                                  return 'Enter Stock Quantity';
-                                                }
-                                                setState(() {
-                                                  stockQty = int.parse(value);
-                                                });
-                                              }
-                                              return null;
-                                            },
+                                            controller: _stockTextController,
                                             keyboardType: TextInputType.number,
                                             decoration: const InputDecoration(
                                               labelText: 'Inventory Quantity', //item code

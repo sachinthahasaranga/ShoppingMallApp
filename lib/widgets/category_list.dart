@@ -131,7 +131,7 @@ class _SubcategoryListState extends State<SubCategoryList> {
                 if(snapshot.connectionState == ConnectionState.done){
 
                   Map<String, dynamic>? data = snapshot.data?.data() as Map<String, dynamic>?;
-                  return Expanded(
+                  return data !=null? Expanded(
                     child: Column(
                       // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -158,11 +158,11 @@ class _SubcategoryListState extends State<SubCategoryList> {
                                     leading: CircleAvatar(
                                       child: Text('${index + 1}'),
                                     ),
-                                    //title: Text(data['subCat'][index]['name']),
-                                    // onTap: (){
-                                    //   _provider.selectSubCategory(data['subCat'][index]['name']);
-                                    //   Navigator.pop(context);
-                                    // },
+                                    title: Text(data?['subCat'][index]['name']),
+                                     onTap: (){
+                                       _provider.selectSubCategory(data?['subCat'][index]['name']);
+                                       Navigator.pop(context);
+                                     },
                                     //need to check and correct
 
                                   );
@@ -177,7 +177,7 @@ class _SubcategoryListState extends State<SubCategoryList> {
 
                       ],
                     ),
-                  );
+                  ):Text('No category selected');
                 }
                 //Map<String, dynamic>data= snapshot.data.data();
                 return Center(child: CircularProgressIndicator(),);
