@@ -67,7 +67,7 @@ class _CategoryListState extends State<CategoryList> {
                           backgroundImage: imageUrl != null ? NetworkImage(imageUrl) : null,                        ),
                         title: Text(name ?? 'N/A'),
                         onTap: (){
-                          _provider.selectCategory(name);
+                          _provider.selectCategory(name,imageUrl);
                           Navigator.pop(context);
                         },
                       );

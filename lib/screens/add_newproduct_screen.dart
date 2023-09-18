@@ -28,6 +28,7 @@ class _AddNewProductState extends State<AddNewProduct> {
   var _subCategoryTextController = TextEditingController();
   var _comparedPriceTextController = TextEditingController();
   var _brandTextController = TextEditingController();
+  var _lowStockTextController = TextEditingController();
   File? _image;
   bool _visible = false;
   bool _track = false;
@@ -37,6 +38,9 @@ class _AddNewProductState extends State<AddNewProduct> {
   double? price;
   double? comparedPrice;
   String? sku;
+  String? weight;
+  double? tax;
+  int? stockQty;
 
 
   @override
@@ -79,7 +83,53 @@ class _AddNewProductState extends State<AddNewProduct> {
                           'Save',
                           style: TextStyle(color: Colors.white),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          if(_formkey.currentState!.validate()){
+                            //only if filled neccessary field
+                            if(_image!=null){
+                              //image should be selected
+                              //upload image to storage
+                              _provider.uploadProductImage(_image!.path, productName).then((url){
+                                if(url!=null){
+                                  //upload product data to firebase
+                                  _provider.saveProductDataToDb(
+                                    context: context,
+                                    comparedPrice: _comparedPriceTextController.text,
+                                    brand: _brandTextController.text,
+                                    collection: dropdownValue,
+                                    description: description,
+                                    lowStockQty: _lowStockTextController.text,
+                                    price: price,
+                                    sku: sku,
+                                    stockQty: stockQty,
+                                    tax: tax,
+                                    weight: weight,
+                                    productName: productName,
+
+                                  );
+
+                                }
+                                else{
+                                  //upload failed
+                                  _provider.alertDialog(
+                                      context: context,
+                                      title: 'IMAGE UPLOAD',
+                                      content: 'Faild to upload product image',
+                                  );
+                                }
+                              });
+                            }
+                            else{
+                              //image not selected
+                              _provider.alertDialog(
+                                context: context,
+                                title: 'PRODUCT IMAGE',
+                                content: 'Product Image not selected',
+                              );
+                            }
+
+                          }
+                        },
                       ),
                     ],
                   ),
@@ -340,52 +390,70 @@ class _AddNewProductState extends State<AddNewProduct> {
                                     ),
                                   ),
                                   //subCatergoryStart
-                                  Visibility(
-                                    visible: _visible,
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(top : 10,bottom: 20),
-                                      child: Row(
-                                        children:[
-                                          Text(
-                                            'Sub Category',
-                                            style: TextStyle(color: Colors.grey,fontSize: 16),
-                                          ),
-                                          SizedBox(width: 10,),
-                                          Expanded(
-                                            child: TextFormField(
-                                              controller: _subCategoryTextController,
-                                              decoration: const InputDecoration(
-                                                hintText: 'Not Selected', //
-                                                labelStyle: TextStyle(color: Colors.grey),
-                                                enabledBorder: UnderlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                    color: Colors.grey,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          IconButton(
-                                            icon: Icon(Icons.edit_outlined),
-                                            onPressed: (){
-                                              showDialog(
-                                                  context: context,
-                                                  builder: (BuildContext context){
-                                                    return SubCategoryList();
-                                                  }
-                                              ).whenComplete(() {
-                                                setState(() {
-                                                  _subCategoryTextController.text=
-                                                      _provider.selectedSubCategory;
-                                                });
-                                              });
-                                            },
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  ),
+                                  // Visibility(
+                                  //   visible: _visible,
+                                  //   child: Padding(
+                                  //     padding: const EdgeInsets.only(top : 10,bottom: 20),
+                                  //     child: Row(
+                                  //       children:[
+                                  //         Text(
+                                  //           'Sub Category',
+                                  //           style: TextStyle(color: Colors.grey,fontSize: 16),
+                                  //         ),
+                                  //         SizedBox(width: 10,),
+                                  //         Expanded(
+                                  //           child: AbsorbPointer(
+                                  //             absorbing: true, //this will block user enter category manually
+                                  //             child: TextFormField(
+                                  //               controller: _subCategoryTextController,
+                                  //               validator: (value){
+                                  //                 if(value!.isEmpty){
+                                  //                   return 'Select Sub Catergory Name';
+                                  //                 }
+                                  //                 return null;
+                                  //               },
+                                  //               decoration: const InputDecoration(
+                                  //                 hintText: 'Not Selected', //
+                                  //                 labelStyle: TextStyle(color: Colors.grey),
+                                  //                 enabledBorder: UnderlineInputBorder(
+                                  //                   borderSide: BorderSide(
+                                  //                     color: Colors.grey,
+                                  //                   ),
+                                  //                 ),
+                                  //               ),
+                                  //             ),
+                                  //           ),
+                                  //         ),
+                                  //         IconButton(
+                                  //           icon: Icon(Icons.edit_outlined),
+                                  //           onPressed: (){
+                                  //             showDialog(
+                                  //                 context: context,
+                                  //                 builder: (BuildContext context){
+                                  //                   return SubCategoryList();
+                                  //                 }
+                                  //             ).whenComplete(() {
+                                  //               setState(() {
+                                  //                 _subCategoryTextController.text=
+                                  //                     _provider.selectedSubCategory;
+                                  //               });
+                                  //             });
+                                  //           },
+                                  //         )
+                                  //       ],
+                                  //     ),
+                                  //   ),
+                                  // ),
                                   TextFormField(
+                                    validator: (value){
+                                      if(value!.isEmpty){
+                                        return 'Select Weight';
+                                      }
+                                      setState(() {
+                                        weight = value;
+                                      });
+                                      return null;
+                                    },
                                     decoration: const InputDecoration(
                                       labelText: 'Weight. eg:- Kg, gm, etc', //item weight
                                       labelStyle: TextStyle(color: Colors.grey),
@@ -397,6 +465,15 @@ class _AddNewProductState extends State<AddNewProduct> {
                                     ),
                                   ),
                                   TextFormField(
+                                    validator: (value){
+                                      if(value!.isEmpty){
+                                        return 'Select Weight';
+                                      }
+                                      setState(() {
+                                        tax = double.parse(value);
+                                      });
+                                      return null;
+                                    },
                                     keyboardType: TextInputType.number,
                                     decoration: const InputDecoration(
                                       labelText: 'Tax %', //item code
@@ -444,7 +521,18 @@ class _AddNewProductState extends State<AddNewProduct> {
                                       padding: const EdgeInsets.all(10.0),
                                       child: Column(
                                         children: [
-                                          TextField(
+                                          TextFormField(
+                                            validator: (value){
+                                              if(_track){
+                                                if(value!.isEmpty){
+                                                  return 'Enter Stock Quantity';
+                                                }
+                                                setState(() {
+                                                  stockQty = int.parse(value);
+                                                });
+                                              }
+                                              return null;
+                                            },
                                             keyboardType: TextInputType.number,
                                             decoration: const InputDecoration(
                                               labelText: 'Inventory Quantity', //item code
@@ -456,8 +544,10 @@ class _AddNewProductState extends State<AddNewProduct> {
                                               ),
                                             ),
                                           ),
-                                          TextField(
+                                          TextFormField(
+                                            //validation not compuslory
                                             keyboardType: TextInputType.number,
+                                            controller: _lowStockTextController,
                                             decoration: const InputDecoration(
                                               labelText: 'Inventory Low Stock Quantity', //item code
                                               labelStyle: TextStyle(color: Colors.grey),

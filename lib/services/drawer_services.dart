@@ -2,6 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:shoppingmall/screens/dashboard_screen.dart';
+import 'package:shoppingmall/screens/logout_screen.dart';
 import 'package:shoppingmall/screens/product_screen.dart';
 
 class DrawerServices{
@@ -13,7 +14,11 @@ class DrawerServices{
     if(title == 'Product'){
       return ProductScreen();
     }
+    if(title == 'LogOut'){
+      return logoutTempory();
+    }
     return MainScreen();
+
 
   }
 

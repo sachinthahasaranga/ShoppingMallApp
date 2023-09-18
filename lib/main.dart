@@ -8,6 +8,7 @@ import 'package:shoppingmall/providers/location_provider.dart';
 import 'package:shoppingmall/providers/product_provider.dart';
 import 'package:shoppingmall/screens/add_newproduct_screen.dart';
 import 'package:shoppingmall/screens/auth_screen.dart';
+import 'package:shoppingmall/screens/dashboard_screen.dart';
 import 'package:shoppingmall/screens/home_screen.dart';
 import 'package:shoppingmall/screens/login_screen.dart';
 import 'package:shoppingmall/screens/map_screen.dart';
@@ -24,30 +25,27 @@ void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
-  runApp(
-    MultiProvider(
-      providers: [
-        Provider(create: (_)=>AuthProvider(),),
-        Provider(create: (_)=>LocationProvider(),),
-        Provider(create: (_)=>ProductProvider()),
-      ],
-      child: MyApp(),
-    ),
-  );
   // runApp(
   //   MultiProvider(
   //     providers: [
-  //       ChangeNotifierProvider(
-  //         create: (_)=>AuthProvider(),
-  //       ),
-  //       ChangeNotifierProvider(
-  //         create: (_)=>LocationProvider(),
-  //       ),
-  //
+  //       Provider(create: (_)=>AuthProvider(),),
+  //       Provider(create: (_)=>LocationProvider(),),
+  //       Provider(create: (_)=>ProductProvider()),
   //     ],
   //     child: MyApp(),
   //   ),
   // );
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_)=>AuthProvider(),),
+        ChangeNotifierProvider(create: (_)=>LocationProvider(),),
+        //ChangeNotifierProvider(create: (_)=>StoreProvider(),),
+        ChangeNotifierProvider(create: (_)=>ProductProvider(),),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -67,9 +65,10 @@ class MyApp extends StatelessWidget {
           WelcomeScreen.id:(context)=>WelcomeScreen(),
           MapScreen.id:(context)=>MapScreen(),
           AuthScreen.id:(context)=>AuthScreen(),
-          AddNewProduct.id:(context)=>AddNewProduct(),
+          AddNewProduct.id:(context)=>AddNewProduct(),//my
           SignInScreen.id:(context)=>SignInScreen(),
           ResetPassword.id:(context)=>ResetPassword(),
+          //MainScreen.id:(context)=>MainScreen(),
 
     },
         );

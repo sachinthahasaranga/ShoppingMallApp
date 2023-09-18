@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shoppingmall/providers/product_provider.dart';
 
 class MenuWidget extends StatefulWidget {
   final Function(String) onItemClick;
@@ -37,6 +39,9 @@ class _MenuWidgetState extends State<MenuWidget> {
 
   @override
   Widget build(BuildContext context) {
+    var _provider= Provider.of<ProductProvider>(context);
+    _provider.getShopName(vendorData!=null ?vendorData.data()['shopName']: '');
+    
     return Container(
       color: Colors.white,
       padding: const EdgeInsets.only(top: 30),
@@ -56,12 +61,12 @@ class _MenuWidgetState extends State<MenuWidget> {
                     backgroundColor: Colors.grey,
                     child: CircleAvatar(//shop picture
                       radius: 30,
-                      //backgroundImage: NetworkImage(vendorData!=null ? vendorData.data()['imageUrl']): null, //show profile image
+                      backgroundImage: NetworkImage(vendorData!=null ? vendorData.data()['imageUrl']: null), //show profile image
                     ),
                   ),
                   SizedBox(width: 10,),
-                  Text(//vendorData!=null ? vendorData.data()['shopName'] :
-                      'Shop Name',
+                  Text(
+                    vendorData!=null ? vendorData.data()['shopName'] : 'Shop Name',
                     style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,

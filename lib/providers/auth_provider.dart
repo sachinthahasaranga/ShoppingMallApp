@@ -272,9 +272,9 @@ class AuthProvider with ChangeNotifier{
         'shopOpen': true,
         'rating':0.00,
         'totalRating': 0,
-        'isTopPicked': true,
+        'isTopPicked': false, //keep initial value as false
         'imageUrl':url,
-        'accVerified' :true
+        'accVerified' :false //keep initial value as false
       });
     } else {
       // Handle the case where 'user' is null, perhaps by showing an error message or taking appropriate action.
