@@ -23,7 +23,7 @@ class _AddNewProductState extends State<AddNewProduct> {
     'Best Selling',
     'Recently Added',
   ];
-  String dropdownValue = 'Featured products';
+  String? dropdownValue = 'Featured products';
 
   var _categoryTextController = TextEditingController();
   var _subCategoryTextController = TextEditingController();
@@ -116,7 +116,16 @@ class _AddNewProductState extends State<AddNewProduct> {
                                       );
 
                                       setState(() {
+
+                                        //clear all the existing values after saved
                                         _formkey.currentState?.reset();
+                                        _comparedPriceTextController.clear();
+                                        dropdownValue = null;
+                                        //_subCategoryTextController.clear();
+                                        _categoryTextController.clear();
+                                        _brandTextController.clear();
+                                        _track = false;
+                                        _visible = false;
                                       });
 
                                     }

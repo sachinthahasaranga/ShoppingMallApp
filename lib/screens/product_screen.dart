@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shoppingmall/screens/add_newproduct_screen.dart';
+import 'package:shoppingmall/widgets/published_product.dart';
+import 'package:shoppingmall/widgets/unpublished_products.dart';
 
 
 class ProductScreen extends StatelessWidget {
@@ -69,9 +71,9 @@ class ProductScreen extends StatelessWidget {
               child: Container(
                 child: TabBarView(
                     children: [
-                      Center(child: Text('published Products'),),
-                      Center(child: Text('Un published Products'),),
-                  ],
+                      PublishedProducts(),
+                      UnPublishedProducts(),
+                    ],
                 ),
               ),
             ),

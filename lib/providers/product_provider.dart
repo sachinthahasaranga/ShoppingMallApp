@@ -122,7 +122,7 @@ class ProductProvider with ChangeNotifier{
         'stockQty': stockQty,
         'lowStockQty' : lowStockQty,
         'published' : false,  //keep the initial value as false
-        'productId' : timeStamp,
+        'productId' : timeStamp.toString(),
         'productImage': this.productUrl,
       });
       this.alertDialog(
