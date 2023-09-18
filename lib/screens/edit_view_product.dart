@@ -257,7 +257,7 @@ class _EditViewProductState extends State<EditViewProduct> {
                       ],
                     ),
                     SizedBox(
-                      height: 20,
+                      height: 30,
                       child: TextFormField(
                         decoration: InputDecoration(
                           border: InputBorder.none,
@@ -267,15 +267,18 @@ class _EditViewProductState extends State<EditViewProduct> {
                         style: TextStyle(fontSize: 30),
                       ),
                     ),
-                    SizedBox(
-                      height: 30,
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          contentPadding: EdgeInsets.zero,
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10,bottom: 10),
+                      child: SizedBox(
+                        height: 40,
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.zero,
+                          ),
+                          controller: _weightText,
+                          style: TextStyle(fontSize: 20),
                         ),
-                        controller: _weightText,
-                        style: TextStyle(fontSize: 20),
                       ),
                     ),
                     Row(
@@ -328,9 +331,11 @@ class _EditViewProductState extends State<EditViewProduct> {
                           });
                         });
                       },
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: _image!=null? Image.file(_image!,height: 300,) : Image.network(image!,height: 300,),
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: _image!=null? Image.file(_image!,height: 300,) : Image.network(image!,height: 300,),
+                        ),
                       ),
                     ),
                     Text('About this product', style: TextStyle(fontSize: 20),),
