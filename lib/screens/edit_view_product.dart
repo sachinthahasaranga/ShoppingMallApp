@@ -74,7 +74,8 @@ class _EditViewProductState extends State<EditViewProduct> {
           _weightText.text = data?['weight'];
           _priceText.text = data!['price'].toString();
           _comparedPriceText.text = data!['comparedPrice'].toString();
-          discount = (double.parse(_priceText.text)/int.parse(_comparedPriceText.text)*100);
+          var difference = int.parse(_comparedPriceText.text) - double.parse(_priceText.text);
+          discount = (difference /int.parse(_comparedPriceText.text)*100);
           image = data?['productImage'];
           _descriptionText.text = data?['description'];
           _categoryTextController.text = data?['category']['mainCategory'];
@@ -544,7 +545,9 @@ class _EditViewProductState extends State<EditViewProduct> {
                         ),
                       ],
                     ),
-
+                    SizedBox(
+                      height: 60,
+                    )
                   ],
                 ),
               )
