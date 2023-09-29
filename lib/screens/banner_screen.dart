@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:shoppingmall/providers/product_provider.dart';
 import 'package:shoppingmall/services/firebase_services.dart';
+import 'package:shoppingmall/widgets/banner_card.dart';
 
 
 class BannerScreen extends StatefulWidget {
@@ -34,12 +35,7 @@ class _BannerScreenState extends State<BannerScreen> {
       body: ListView(
         padding: EdgeInsets.zero,
         children: [
-          SizedBox(
-            height: 200,
-            child: Card(
-              color: Colors.grey[200],
-            ),
-          ),
+          BannerCard(),
           Divider(thickness: 3,),
           SizedBox(height: 20,),
           Container(
@@ -58,7 +54,7 @@ class _BannerScreenState extends State<BannerScreen> {
                     width: MediaQuery.of(context).size.width,
                     child: Card(
                       color: Colors.grey[200],
-                      child: _image!=null ? Image.file(_image!) : Center(child: Text('No Image Selected'),),
+                      child: _image!=null ? Image.file(_image!,fit: BoxFit.fill,) : Center(child: Text('No Image Selected'),),
                     ),
                   ),
                   TextFormField(
@@ -132,7 +128,7 @@ class _BannerScreenState extends State<BannerScreen> {
                                     child: Text('Save', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
                                     onPressed: () {
                                       EasyLoading.show(status: 'saving...');
-                                      uploadProductImage(_image!.path,_provider.shopName).then((url) {
+                                      uploadBannerImage(_image!.path,_provider.shopName).then((url) {
                                         if(url!=null){
                                           // save banner url to firestore
                                           _services.saveBanner(url);
@@ -173,6 +169,8 @@ class _BannerScreenState extends State<BannerScreen> {
                                   onPressed: () {
                                     setState(() {
                                       _visible = false;
+                                      _imagePathText.clear();
+                                      _image = null;
                                     });
                                   },
 
@@ -211,7 +209,7 @@ class _BannerScreenState extends State<BannerScreen> {
     return _image;
   }
 
-  Future<String> uploadProductImage(filePath,shopName) async{
+  Future<String> uploadBannerImage(filePath,shopName) async{
     File file = File(filePath);
     var timeStamp = Timestamp.now().microsecondsSinceEpoch;
 
