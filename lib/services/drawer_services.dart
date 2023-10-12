@@ -1,5 +1,4 @@
 
-
 import 'package:flutter/cupertino.dart';
 import 'package:shoppingmall/screens/banner_screen.dart';
 import 'package:shoppingmall/screens/dashboard_screen.dart';

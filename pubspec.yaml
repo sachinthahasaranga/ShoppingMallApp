@@ -47,7 +47,6 @@ flutter:
 
   assets:
    - assets/images/
-   - assets/images/backgroundVendor.jpg
   #   - images/a_dot_ham.jpeg
 
 
