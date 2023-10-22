@@ -1,179 +1,136 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(ChatbotApp());
-}
+void main() => runApp(MyApp());
 
-class ChatbotApp extends StatelessWidget {
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      home: ChatScreen(),
       theme: ThemeData(
         primaryColor: Colors.blue,
-        colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.blueAccent),
+        hintColor: Colors.green,
       ),
-      home: ChatScreen(),
     );
   }
 }
 
 class ChatScreen extends StatefulWidget {
   @override
-  _ChatScreenState createState() => _ChatScreenState();
+  State createState() => ChatScreenState();
 }
 
-class _ChatScreenState extends State<ChatScreen> {
-  final List<Message> _messages = [];
-  final TextEditingController _textController = TextEditingController();
+class ChatScreenState extends State<ChatScreen> {
+  final List<String> messages = [];
+  String currentCategory = "";
+  TextEditingController _controller = TextEditingController();
 
-  void _handleSubmitted(String text) {
-    _textController.clear();
-    setState(() {
-      _messages.add(Message(text: text, isUser: true));
-    });
-
-    // Simulate chatbot response
-    final chatbotResponse = getChatbotResponse(text);
-    _addBotMessage(chatbotResponse);
+  @override
+  void initState() {
+    super.initState();
+    // Welcome message from the chatbot
+    messages.add('App: Welcome to the Shopping Mall Support Chatbot! How can I assist you today?');
   }
 
-  void _addBotMessage(String text) {
+  void handleUserInput(String text) {
     setState(() {
-      _messages.add(Message(text: text, isUser: false));
+      messages.add('User: $text');
+
+      // Implement logic for handling user input creatively
+      if (text.toLowerCase().contains('help')) {
+        // User asked for help
+        messages.add('App: Sure, I can help. What specifically do you need assistance with?');
+      } else if (text.toLowerCase().contains('categories')) {
+        // User asked for available categories
+        messages.add('App: We have two main categories: "Product Information" and "Store Assistance".');
+        messages.add('App: Which one are you interested in?');
+      } else if (text.toLowerCase().contains('product information')) {
+        // User selected "Product Information"
+        currentCategory = 'Product Information';
+        messages.add('App: Great choice! You are now in the "Product Information" category.');
+        messages.add('App: Please ask about any product details you need.');
+      } else if (text.toLowerCase().contains('store assistance')) {
+        // User selected "Store Assistance"
+        currentCategory = 'Store Assistance';
+        messages.add('App: Excellent! You are now in the "Store Assistance" category.');
+        messages.add('App: How can we assist you with your in-store experience?');
+      } else if (currentCategory == 'Product Information') {
+        // Handle product-related questions creatively
+        // Implement product information lookup logic here
+        // Example: "App: The latest smartphones are available in the electronics section."
+      } else if (currentCategory == 'Store Assistance') {
+        // Handle store assistance creatively
+        // Implement store assistance logic here
+        // Example: "App: Our store staff will be happy to help you. Please visit the Customer Service desk."
+      } else {
+        messages.add('App: I didn\'t quite catch that. How may I assist you?');
+      }
+
+      _controller.clear();
     });
-  }
-
-  String getChatbotResponse(String userMessage) {
-    // Handle different user queries and provide responses here
-    userMessage = userMessage.toLowerCase();
-
-    if (userMessage.contains('hello')) {
-      return 'Hi there! Welcome to our shopping mall app.';
-    } else if (userMessage.contains('how can I shop')) {
-      return 'You can start shopping by browsing our wide range of products and adding them to your cart. When you are ready, proceed to checkout.';
-    } else if (userMessage.contains('what are the current offers')) {
-      return 'We have exciting offers on fashion, electronics, and more. Check out our "Offers" section to see the latest deals.';
-    } else if (userMessage.contains('how to contact customer support')) {
-      return 'You can reach our customer support team by tapping on the "Contact Us" option in the app menu.';
-    } else if (userMessage.contains('store locations')) {
-      return 'We have multiple store locations in the city. You can find the nearest store using the "Store Locator" feature in the app.';
-    } else {
-      return "I'm sorry, I don't have information on that specific topic. Please feel free to ask any other questions.";
-    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chat bot'),
+        title: Text('Shopping Mall Support'),
       ),
       body: Column(
-        children: <Widget>[
+        children: [
           Expanded(
             child: ListView.builder(
-              itemCount: _messages.length,
-              itemBuilder: (context, index) {
-                final message = _messages[index];
-                return ChatMessage(
-                  text: message.text,
-                  isUser: message.isUser,
+              itemCount: messages.length,
+              itemBuilder: (BuildContext context, int index) {
+                return ChatBubble(
+                  text: messages[index],
+                  isUserMessage: messages[index].startsWith('User: '),
                 );
               },
             ),
           ),
-          Divider(height: 1.0),
-          Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).cardColor,
+          TextField(
+            onSubmitted: (String text) {
+              handleUserInput(text);
+            },
+            decoration: InputDecoration(
+              hintText: 'Enter your question...',
+              suffixIcon: IconButton(
+                icon: Icon(Icons.send),
+                onPressed: () {
+                  handleUserInput("User: " + _controller.text);
+                },
+              ),
             ),
-            child: _buildTextComposer(),
+            controller: _controller,
           ),
         ],
       ),
     );
   }
-
-  Widget _buildTextComposer() {
-    return IconTheme(
-      data: IconThemeData(color: Theme.of(context).colorScheme.secondary),
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: Row(
-          children: <Widget>[
-            Flexible(
-              child: TextField(
-                controller: _textController,
-                onSubmitted: _handleSubmitted,
-                decoration: InputDecoration.collapsed(
-                  hintText: 'Ask a question',
-                ),
-              ),
-            ),
-            IconButton(
-              icon: Icon(Icons.send),
-              onPressed: () => _handleSubmitted(_textController.text),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }
 
-class Message {
+class ChatBubble extends StatelessWidget {
   final String text;
-  final bool isUser;
+  final bool isUserMessage;
 
-  Message({required this.text, required this.isUser});
-}
-
-class ChatMessage extends StatelessWidget {
-  final String text;
-  final bool isUser;
-
-  ChatMessage({required this.text, required this.isUser});
+  ChatBubble({required this.text, required this.isUserMessage});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
-      child: Row(
-        mainAxisAlignment:
-        isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          if (!isUser)
-            CircleAvatar(
-              child: Text('Bot'),
-            ),
-          Flexible(
-            child: Container(
-              padding: EdgeInsets.all(10.0),
-              decoration: BoxDecoration(
-                color:
-                isUser ? Theme.of(context).colorScheme.secondary : Colors.blueGrey,
-                borderRadius: isUser
-                    ? BorderRadius.only(
-                  topLeft: Radius.circular(8.0),
-                  topRight: Radius.circular(8.0),
-                  bottomLeft: Radius.circular(8.0),
-                )
-                    : BorderRadius.only(
-                  topLeft: Radius.circular(8.0),
-                  topRight: Radius.circular(8.0),
-                  bottomRight: Radius.circular(8.0),
-                ),
-              ),
-              child: Text(
-                text,
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ),
-        ],
+    return Align(
+      alignment: isUserMessage ? Alignment.centerRight : Alignment.centerLeft,
+      child: Container(
+        margin: EdgeInsets.all(8.0),
+        padding: EdgeInsets.all(12.0),
+        decoration: BoxDecoration(
+          color: isUserMessage ? Colors.blue : Colors.green,
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+        child: Text(
+          text,
+          style: TextStyle(color: Colors.white, fontSize: 16.0),
+        ),
       ),
     );
   }

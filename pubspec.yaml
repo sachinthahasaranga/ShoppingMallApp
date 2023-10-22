@@ -31,6 +31,17 @@ dependencies:
   location: ^5.0.0
   firebase_storage: ^11.2.6
   flutter_easyloading: ^3.0.5
+  flutterflow_paginate_firestore: ^1.0.3+1
+  persistent_bottom_nav_bar: ^5.0.2
+  url_launcher: ^6.1.14
+  expandable_text: 2.3.0
+  dotted_border: ^2.1.0
+  date_time_format: ^2.0.1
+  intl: ^0.18.1
+  search_page: ^2.3.0
+  pdf: ^3.10.4
+  path_provider: ^2.1.1
+
 
 
 dev_dependencies:

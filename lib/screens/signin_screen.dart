@@ -2,6 +2,8 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shoppingmall/providers/auth_provider.dart';
+import 'package:shoppingmall/screens/auth_screen.dart';
+import 'package:shoppingmall/screens/customer_home.dart';
 import 'package:shoppingmall/screens/home_screen.dart';
 import 'package:shoppingmall/widgets/reset_password_screen.dart';
 
@@ -47,8 +49,8 @@ class _SignInScreenState extends State<SignInScreen> {
                       SizedBox(height: 20,),
                       Image.asset(
                         'assets/images/signup-page.png',
-                        height: 300.0,
-                        width: 300.0,
+                        height: 200.0,
+                        width: 200.0,
                       ),
                       SizedBox(height: 20,),
                       TextFormField(
@@ -129,6 +131,19 @@ class _SignInScreenState extends State<SignInScreen> {
                               style: TextStyle(color: Colors.lightBlue, fontWeight: FontWeight.bold),
                             ),
                           ),
+
+                          SizedBox(width: 130,),
+
+                          InkWell(
+                            onTap: (){
+                              Navigator.pushNamed(context, AuthScreen.id );
+                            },
+                            child: Text(
+                              'Sign Up',
+                              textAlign: TextAlign.end,
+                              style: TextStyle(color: Colors.lightBlue, fontWeight: FontWeight.bold),
+                            ),
+                          ),
                         ],
                       ),
                       SizedBox(height: 20,),
@@ -152,7 +167,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                           _loading = false;
                                         });
 
-                                        Navigator.pushReplacementNamed(context, HomeScreen.id);
+                                        Navigator.pushReplacementNamed(context, CustomerHomeScreen.id);
                                       }else{
                                         setState(() {
                                           _loading = false;

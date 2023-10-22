@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shoppingmall/screens/profile_screen.dart';
 
 import '../providers/location_provider.dart';
 
@@ -27,7 +28,6 @@ class _MyAppBarState extends State<MyAppBar> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text('...', style: TextStyle(color: Colors.deepPurple),),
-            Icon(Icons.edit_outlined,color: Colors.white,),
           ],
         ),
       ),
@@ -35,7 +35,9 @@ class _MyAppBarState extends State<MyAppBar> {
         Padding(
           padding: const EdgeInsets.all(2.0),
           child: IconButton(
-            icon: Icon(Icons.account_circle_outlined,), onPressed: () {  },
+            icon: Icon(Icons.account_circle_outlined,), onPressed: () {
+            Navigator.pushReplacementNamed(context, ProfileScreen.id);
+          },
           ),
         ),
       ],

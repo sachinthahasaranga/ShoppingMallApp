@@ -3,11 +3,14 @@ import 'package:provider/provider.dart';
 import 'package:shoppingmall/providers/auth_provider.dart';
 import 'package:shoppingmall/providers/location_provider.dart';
 import 'package:shoppingmall/screens/auth_screen.dart';
+import 'package:shoppingmall/screens/feedback_screen.dart';
 import 'package:shoppingmall/screens/map_screen.dart';
 import 'package:shoppingmall/screens/onboarding_screen.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shoppingmall/widgets/feedback_widget.dart';
 
-import 'feedback_screen.dart';
+
+import 'chat_bot_app.dart';
 
 class WelcomeScreen extends StatefulWidget {
   //const WelcomeScreen({super.key});
@@ -142,8 +145,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     Navigator.pushNamed(context, AuthScreen.id);
                   },
                 ),
+                /*
                 TextButton(
-
                   child: Text('Shop Finder', style: TextStyle(color: Color(
                       0xFF36353D), fontSize: 15)),
                   onPressed: () async {
@@ -175,21 +178,28 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     }
                   },
                 ),
+                 */
+
 
                 ElevatedButton(
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(Color(0xFFB598E3)),
                   ),
-                  child: Text('Give Your Feedback...', style: TextStyle(color: Colors.black),),
-                  onPressed: (){
-                    /*Navigator.push(
+                  child: Text(
+                    'Give Your Feedback...',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                  onPressed: () {
+                    // Navigate to the FeedbackScreen when the button is pressed
+                    Navigator.push(
                       context,
-                     /* MaterialPageRoute(
-                        //builder: (context) => FeedbackScreen(),
-                      ),*/
-                    );*/
+                      MaterialPageRoute(
+                          builder: (context) => FeedbackFormApp()
+                      ),
+                    );
                   },
                 ),
+
                 SizedBox(height: 20,),
 
                 ElevatedButton(
@@ -215,6 +225,39 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Navigate to the ChatbotApp when the button is pressed
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ChatbotApp(),
+            ),
+          );
+        },
+        child: Icon(Icons.chat_bubble),
+        backgroundColor: Colors.deepPurple, // Customize the button's color
+      ),
     );
   }
 }
+
+void main() {
+  runApp(ChatbotApp());
+}
+
+class ChatbotApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData(
+        primaryColor: Colors.blue,
+        colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.blueAccent), // Set your accent color
+      ),
+      home: ChatScreen(),
+    );
+  }
+}
+
+// Define your ChatScreen, AuthProvider, and other widgets here
+

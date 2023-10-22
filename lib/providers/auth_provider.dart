@@ -6,8 +6,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:location/location.dart';
-import 'package:shoppingmall/screens/home_screen.dart';
 import 'package:shoppingmall/services/user_services.dart';
+
+import '../screens/home_screen.dart';
 
 class AuthProvider with ChangeNotifier{
 
@@ -25,6 +26,8 @@ class AuthProvider with ChangeNotifier{
   late String shopAddress;
   late String email;
   late String address;
+
+  late DocumentSnapshot snapshot;
 
   Future<void>verifyPhone(BuildContext context, String number)async {
 
@@ -137,7 +140,7 @@ class AuthProvider with ChangeNotifier{
         });
   }
 
-//reduce image size
+
   Future<File> getImage() async {
 
     final picker = ImagePicker();
@@ -154,7 +157,7 @@ class AuthProvider with ChangeNotifier{
     return this.image;
   }
 
-  Future getCurrentAddress()async{
+  /*Future getCurrentAddress()async{
     Location location = new Location();
 
     bool _serviceEnabled;
@@ -184,6 +187,8 @@ class AuthProvider with ChangeNotifier{
 
 
   }
+
+   */
 
   Future<UserCredential?> registerVendor(String email, String password) async {
     this.email = email;
@@ -272,9 +277,9 @@ class AuthProvider with ChangeNotifier{
         'shopOpen': true,
         'rating':0.00,
         'totalRating': 0,
-        'isTopPicked': false, //keep initial value as false
+        'isTopPicked': true,
         'imageUrl':url,
-        'accVerified' :false //keep initial value as false
+        'accVerified' :true
       });
     } else {
       // Handle the case where 'user' is null, perhaps by showing an error message or taking appropriate action.
@@ -302,6 +307,26 @@ class AuthProvider with ChangeNotifier{
     });
     this.loading=false;
     notifyListeners();
+
+
   }
 
+
+  Future<DocumentSnapshot>getUserDetails()async{
+    var result = await FirebaseFirestore.instance.collection('users').doc(_auth.currentUser?.uid).get();
+
+
+    this.snapshot = result;
+    notifyListeners();
+
+
+    return result;
+  }
+
+
+
 }
+
+
+
+

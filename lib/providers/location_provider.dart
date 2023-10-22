@@ -8,6 +8,7 @@ class LocationProvider with ChangeNotifier{
   bool permissionAllowed = false;
   bool loading = false;
 
+/*
   Future<void> getCurrentPosition()async {
 
     Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
@@ -19,6 +20,9 @@ class LocationProvider with ChangeNotifier{
     }else{
       print('Permission Not Allowed');
     }
-  }
+    }
 
+
+
+   */
 }

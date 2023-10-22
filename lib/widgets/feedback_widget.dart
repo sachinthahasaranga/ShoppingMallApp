@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:shoppingmall/screens/feedback_display.dart';
+import 'package:shoppingmall/screens/profile_screen.dart';
 
 void main() {
   runApp(FeedbackFormApp());
@@ -22,23 +23,8 @@ class FeedbackForm extends StatefulWidget {
 
 class _FeedbackFormState extends State<FeedbackForm> {
   // Define variables to store user feedback
-  String personalShoppingAssistant = 'Excellent';
-  String mostExcitingItem = '';
-  double shoppingSpeed = 5.0;
-  String virtualShopping = '';
-  String wishlistUsage = 'Never';
-  bool paymentIssues = false;
-  String memorableShoppingAdventure = '';
-  String appPersonality = '';
+  int starRating = 0;
   String innovativeIdeas = '';
-  String seasonalShopping = '';
-  String reviewImportance = '';
-  String timeTravelShopping = '';
-  String appMotivation = '';
-  String fashionAdvice = '';
-  String appRename = '';
-  String shoppingSoundtrack = '';
-  String travelShopping = '';
 
   // Create a GlobalKey to identify the Form widget and reset it if needed
   final _formKey = GlobalKey<FormState>();
@@ -47,7 +33,22 @@ class _FeedbackFormState extends State<FeedbackForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Feedback Form'),
+        elevation: 0.0,
+        centerTitle: true,
+        iconTheme: IconThemeData(
+            color: Colors.white
+        ),
+        title: Text('User Review' , style: TextStyle(color: Colors.white),),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios) , color: Colors.white, onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ProfileScreen(),
+            ),
+          );
+        },
+        ),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
@@ -56,51 +57,31 @@ class _FeedbackFormState extends State<FeedbackForm> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Question 1
-              Text('1. Personal Shopping Assistant:'),
-              buildRadioGroup(
-                options: ['Excellent', 'Average', 'Needs Improvement'],
-                selectedValue: personalShoppingAssistant,
-                onChanged: (value) {
-                  setState(() {
-                    personalShoppingAssistant = value!;
-                  });
-                },
+              // Question 1 - Five-star rating
+              Text('1. Rate our app (5 stars):'),
+              Row(
+                children: List.generate(5, (index) {
+                  return IconButton(
+                    icon: Icon(
+                      index < starRating ? Icons.star : Icons.star_border,
+                      size: 40.0,
+                      color: Colors.orange, // Customize the star color
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        starRating = index + 1;
+                      });
+                    },
+                  );
+                }),
               ),
               SizedBox(height: 16.0),
 
-              // Question 2
-              Text('2. Product Discovery:'),
-              buildRadioGroup(
-                options: ['A new fashion trend', 'A great deal or discount', 'None, I stick to my usual purchases'],
-                selectedValue: mostExcitingItem,
-                onChanged: (value) {
-                  setState(() {
-                    mostExcitingItem = value!;
-                  });
-                },
-              ),
-              SizedBox(height: 16.0),
-
-              // Question 3
-              Text('3. Shopping Speed:'),
-              Slider(
-                value: shoppingSpeed,
-                onChanged: (value) {
-                  setState(() {
-                    shoppingSpeed = value;
-                  });
-                },
-                min: 1.0,
-                max: 10.0,
-                divisions: 9,
-                label: shoppingSpeed.toString(),
-              ),
-              SizedBox(height: 16.0),
+              // Question 2 - Text input
               TextFormField(
                 decoration: InputDecoration(
-                  labelText: "4. Innovative Ideas For Improve App *", // Add an asterisk to indicate required
-                  hintText: "Enter your innovative ideas here",
+                  labelText: '2. Your Feedback ',
+                  hintText: 'Enter your Feedback',
                 ),
                 onChanged: (value) {
                   setState(() {
@@ -108,16 +89,8 @@ class _FeedbackFormState extends State<FeedbackForm> {
                   });
                 },
                 maxLines: 3, // You can adjust the number of lines as needed
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'This field is required.';
-                  }
-                  return null; // Return null to indicate that the field is valid
-                },
               ),
               SizedBox(height: 16.0),
-
-              // Add more questions in a similar format
 
               Center(
                 child: ElevatedButton(
@@ -128,10 +101,8 @@ class _FeedbackFormState extends State<FeedbackForm> {
 
                       // Define a map to store the user's feedback data
                       final userData = {
-                        'personal Shopping Assistant': personalShoppingAssistant,
-                        'most Exciting Item': mostExcitingItem,
-                        'shopping Speed': shoppingSpeed,
-                        'innovative Ideas': innovativeIdeas,
+                        'starRating': starRating,
+                        'innovativeIdeas': innovativeIdeas,
                         // Add more fields for other questions
                       };
 
@@ -173,7 +144,6 @@ class _FeedbackFormState extends State<FeedbackForm> {
                           ),
                         );
 
-
                         // Navigate to the FeedbackDisplayScreen and pass the entered data
                         Navigator.push(
                           context,
@@ -181,6 +151,7 @@ class _FeedbackFormState extends State<FeedbackForm> {
                             builder: (context) => FeedbackDisplayScreen(userData: userData),
                           ),
                         );
+
                       } catch (e) {
                         // Handle any potential errors here
                         print('Error submitting feedback: $e');
@@ -190,41 +161,11 @@ class _FeedbackFormState extends State<FeedbackForm> {
                   child: Text('Submit'),
                 ),
               ),
-
-
             ],
           ),
         ),
       ),
     );
   }
-
-  // Helper function to build a radio button group
-  Widget buildRadioGroup({
-    required List<String> options,
-    required String selectedValue,
-    void Function(String?)? onChanged,
-  }) {
-    return Column(
-      children: options.map((option) {
-        return Row(
-          children: [
-            Radio<String>(
-              value: option,
-              groupValue: selectedValue,
-              onChanged: onChanged,
-            ),
-            Text(option),
-          ],
-        );
-      }).toList(),
-    );
-  }
 }
 
-Future<List<Map<String, dynamic>>> fetchFeedbackData() async {
-  final firestore = FirebaseFirestore.instance;
-  final querySnapshot = await firestore.collection('feedback').get();
-
-  return querySnapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
-}

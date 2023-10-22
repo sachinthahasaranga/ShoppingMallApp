@@ -33,8 +33,8 @@ class _HomeScreenState extends State<HomeScreen> {
   String title='';
 
   Widget build(BuildContext context) {
-    //final auth = Provider.of<AuthProvider>(context);
-    //final locationData = Provider.of<LocationProvider>(context);
+    final auth = Provider.of<AuthProvider>(context);
+    final locationData = Provider.of<LocationProvider>(context);
 
     return Scaffold(
       body: SliderMenuContainer(
@@ -64,6 +64,8 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           ),
           sliderMain: _services.drawerScreen(title)),
+
+
 
 
     );

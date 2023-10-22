@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shoppingmall/screens/login_buttons_main.dart';
 import 'package:shoppingmall/screens/signin_screen.dart';
 
 import 'home_screen.dart';
+import 'main_screen.dart';
 import 'welcome_screen.dart';
 
 
@@ -25,9 +27,9 @@ class _SplashScreenState extends State<SplashScreen> {
     {
       FirebaseAuth.instance.authStateChanges().listen((User? user) {
         if(user==null){
-          Navigator.pushReplacementNamed(context, SignInScreen.id);
+          Navigator.pushReplacementNamed(context, LoginButtons.id);
         }else{
-          Navigator.pushReplacementNamed(context, HomeScreen.id);
+          Navigator.pushReplacementNamed(context, MainScreens.id);
         }
       } );
     }

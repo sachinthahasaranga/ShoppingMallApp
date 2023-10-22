@@ -7,6 +7,13 @@ class MapScreen extends StatefulWidget {
   static const String id = 'map-screen';
 
   @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    throw UnimplementedError();
+  }
+
+/*
+  @override
   _MapScreenState createState() => _MapScreenState();
 }
 
@@ -21,4 +28,5 @@ class _MapScreenState extends State<MapScreen> {
       ),
     );
   }
+   */
 }
